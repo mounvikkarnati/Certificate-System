@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photon club's Certificate System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="profile.png" type="image/png">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Hamburger on left -->
+            <div class="nav-hamburger">
+                <div class="hamburger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <!-- Logo in center -->
+            <div class="nav-logo">
+                <img src="logo.png" alt="Photon Club Logo" class="logo">
+                <h2>Certificate System</h2>
+            </div>
+            
+            <!-- Empty div for spacing -->
+            <div class="nav-spacer">
+                
+            </div>
+            
+            <!-- Regular navigation (hidden on mobile) -->
+            <div class="nav-menu">
+                <button class="nav-btn active" data-tab="verify">Verify Certificate</button>
+                <button class="nav-btn" data-tab="generate">Generate Certificates</button>
+                <button class="nav-btn" data-tab="manage">Manage Certificates</button>
+            </div>
+            
+            <!-- Admin button (hidden on mobile) -->
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="adminLoginBtn">Admin Login</button>
+            </div>
+        </div>
+        
+        <!-- Side panel and overlay -->
+        <div class="side-panel-overlay"></div>
+        <div class="side-panel">
+            <div class="side-panel-header">
+                <h3>MK's Certificate System</h3>
+                <button class="side-panel-close">&times;</button>
+            </div>
+            <div class="side-panel-menu">
+                <button class="side-panel-btn active" data-tab="verify">
+                    <span class="btn-icon">🔍</span>
+                    Verify Certificate
+                </button>
+                <button class="side-panel-btn" data-tab="generate">
+                    <span class="btn-icon">⚡</span>
+                    Generate Certificates
+                </button>
+                <button class="side-panel-btn" data-tab="manage">
+                    <span class="btn-icon">📊</span>
+                    Manage Certificates
+                </button>
+                <button class="side-panel-btn" id="sideAdminLoginBtn">
+                    <span class="btn-icon">🔐</span>
+                    Admin Login
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Verify Certificate Tab -->
+        <div id="verify" class="tab-content active">
+            <!-- Content will be dynamically loaded by verify.js -->
+        </div>
+
+        <!-- Generate Certificates Tab -->
+        <div id="generate" class="tab-content">
+            <div class="tab-header">
+                <h1>Generate Certificates</h1>
+                <p>Admin panel for generating certificates in bulk</p>
+                <p>Need Admin Login to view this page.</p>
+                <p>Contact Mounvik Karnati.</p>
+                <a href="mailto:mounvikkarnati@gmail.com">mounvikkarnati@gmail.com</a>
+            </div>
+            <!-- Content will be loaded by generate.js -->
+        </div>
+
+        <!-- Manage Certificates Tab -->
+        <div id="manage" class="tab-content">
+            <div class="tab-header">
+                <h1>Manage Certificates</h1>
+                <p>Search and manage existing certificates</p>
+                <p>Need Admin Login to view this page.</p>
+                <p>Contact Mounvik Karnati.</p>
+                <a href="mailto:mounvikkarnati@gmail.com">mounvikkarnati@gmail.com</a>
+            </div>
+            <div class="manage-container">
+                <div class="input-group">
+                    <input type="text" id="searchHashInput" placeholder="Enter 7-digit certificate code" maxlength="7">
+                    <button class="btn btn-primary" id="searchBtn">
+                        <span class="btn-text">Search Certificate</span>
+                        <div class="btn-loader hidden"></div>
+                    </button>
+                </div>
+                <div id="manageResult" class="result-container hidden"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links-group">
+                    <button class="footer-link" data-tab="verify">
+                        <span class="footer-link-icon">🔍</span>
+                        Verify Certificate
+                    </button>
+                    <button class="footer-link" data-tab="generate">
+                        <span class="footer-link-icon">⚡</span>
+                        Generate Certificates
+                    </button>
+                    <button class="footer-link" data-tab="manage">
+                        <span class="footer-link-icon">📊</span>
+                        Manage Certificates
+                    </button>
+                    <button class="footer-link" onclick="window.location.href='#'">
+                        <span class="footer-link-icon">🌐</span>
+                        Visit Website
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support/Contact</h4>
+                <p>Certificate Management System <span class="about-highlight">v2.0</span></p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="icon">📧</span>
+                        <a href="mailto:mounvikkarnati@gmail.com">mounvikkarnati@gmail.com</a>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://in.linkedin.com/in/mounvikkarnati" class="social-link" target="_blank">
+                        <span class="social-icon">in</span>
+                        LinkedIn Profile
+                    </a>
+                    <a href="https://www.instagram.com/mounvik.karnati/" class="social-link" target="_blank">
+                        <span class="social-icon">ig</span>
+                        Instagram Profile
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>About</h4>
+                <p><span class="about-highlight">Photon Club</span> - VIT-AP University</p>
+                
+                <div class="about-links">
+                    <a href="https://photonclubvitap.42web.io/" class="about-link" target="_blank">
+                        <span class="about-link-icon">🌐</span>
+                        Official Website
+                    </a>
+                    <a href="mailto:photon.club@vitap.ac.in" class="about-link">
+                        <span class="about-link-icon">✉️</span>
+                        photon.club@vitap.ac.in
+                    </a>
+                    <a href="https://in.linkedin.com/company/photon-club-vitap" class="about-link" target="_blank">
+                        <span class="about-link-icon">💼</span>
+                        LinkedIn Page
+                    </a>
+                    <a href="https://www.instagram.com/photonclub.vitap/" class="about-link" target="_blank">
+                        <span class="about-link-icon">📷</span>
+                        Instagram Page
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <!-- Clickable Copyright Trigger -->
+            <div class="copyright-trigger" onclick="toggleCopyrightNotice()">
+                <span class="trigger-icon">📜</span>
+                View Copyright Notice
+                <span class="trigger-arrow">▼</span>
+            </div>
+            
+            <!-- Hidden Copyright Details -->
+            <div class="copyright-notice hidden">
+                <p class="copyright-main">
+                    <span class="copyright-icon">⚡</span>
+                    EXCLUSIVELY DESIGNED & DEVELOPED BY <span class="copyright-owner">MOUNVIK KARNATI</span>
+                    <span class="copyright-icon">⚡</span>
+                </p>
+                <p class="copyright-legal">
+                    <strong>STRICTLY PROPRIETARY</strong> | 
+                    <strong>ALL RIGHTS RESERVED & PROTECTED</strong> | 
+                    <strong>UNAUTHORIZED REPLICATION PROHIBITED</strong> | 
+                    © 2025
+                </p>
+                <p class="copyright-warning">
+                    ⚠️ This entire system, codebase, and design are the exclusive intellectual property of Mounvik Karnati. 
+                    Any replication, distribution, or unauthorized use is strictly forbidden and will result in legal action.
+                </p>
+            </div>
+            
+            <hr class="copyright-divider">
+            
+            <p class="organization-copyright">
+                &copy; 2025 Photon Club, VIT-AP University. All rights reserved by Mounvik 😉.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="script.js"></script>
+    <script src="generate.js"></script>
+    <script src="verify.js"></script>
+    <script src="manage.js"></script>
+</body>
+</html>
