@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="logo.png" alt="Photon Club VITAP" width="320">
-
 # ⚡ Photon Club Certificate System
 
 **Generate, manage and verify event certificates in seconds, with a unique 7-character code and QR code on every certificate.**
